@@ -76,8 +76,8 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+//		earthquakesURL = "test1.atom";
+		earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
 		//earthquakesURL = "quiz1.atom";
@@ -169,10 +169,10 @@ public class EarthquakeCityMap extends PApplet {
 		// and a Marker as input.  
 		// If isInCountry ever returns true, isLand should return true.
 		for (Marker m : countryMarkers) {
-			// TODO: Finish this method using the helper method isInCountry
-			
+			if (isInCountry(earthquake, m)) {
+				return true;
+			}
 		}
-		
 		
 		// not inside any country
 		return false;
@@ -186,7 +186,45 @@ public class EarthquakeCityMap extends PApplet {
 	 * */
 	private void printQuakes() 
 	{
-		// TODO: Implement this method
+		int numOfAllQuakes = 0;
+		for (Marker cm : countryMarkers) 
+		{
+			int quakeCounter = 0;
+			String cmCountryName = (String)cm.getProperty("name");
+			for (Marker qm : quakeMarkers)  
+			{
+				String qmCountryName = (String)qm.getProperty("country");
+				EarthquakeMarker em = (EarthquakeMarker)qm;
+				if(em.isOnLand) 
+				{
+					if (cmCountryName.equals(qmCountryName)) 
+					{
+						quakeCounter++;
+					}
+				}
+			}
+			
+			if (quakeCounter > 0)
+			{				
+				System.out.println(cmCountryName + ": " + quakeCounter);
+				numOfAllQuakes += quakeCounter;
+			}
+			
+		}
+		
+//		int oceanCounter = 0;
+		int oceanCounter = quakeMarkers.size() - numOfAllQuakes;
+//		for (Marker qm : quakeMarkers) 
+//		{
+//			EarthquakeMarker em = (EarthquakeMarker)qm;
+//			if (em.isOnLand == false) 
+//			{
+//				oceanCounter++;
+//			}
+//		}
+		
+		System.out.println("OCEAN QUAKES: " + oceanCounter);
+		// Implement this method
 		// One (inefficient but correct) approach is to:
 		//   Loop over all of the countries, e.g. using 
 		//        for (Marker cm : countryMarkers) { ... }
